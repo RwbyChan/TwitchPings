@@ -1,0 +1,25 @@
+{
+  "name": "twitchpings",
+  "version": "1.0.0",
+  "description": "Twitch Pings bot Discord",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RwbyChan/TwitchPings.git"
+  },
+  "author": "RubyChan",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/RwbyChan/TwitchPings/issues"
+  },
+  "homepage": "https://github.com/RwbyChan/TwitchPings#readme",
+  "dependencies": {
+    "dateformat": "^4.5.1",
+    "discord.js": "^12.5.1",
+    "simple-twitch-api": "^1.2.0"
+  }
+}
