@@ -9,5 +9,5 @@
     "discord_ping_role": "",
     "discord_embed_color": "",
     "discord_embed_footer_message": "",
-    "auto_crosspost": true
+    "auto_crosspost": false
 }
