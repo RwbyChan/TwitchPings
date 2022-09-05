@@ -90,3 +90,24 @@ exports.format_date = function() {
     var d = new Date();
     return `${d.getFullYear() + "/" + ("0"+(d.getMonth()+1)).slice(-2) + "/" + ("0" + d.getDate()).slice(-2)}`;
 }
+
+exports.format_alert = function(type, message) {
+    if(type == 'danger') {
+        return `
+        \`\`\`ansi
+[2;31m❌ ${message}[0m\`\`\`
+        `;
+    }
+    else if(type == 'warning') {
+        return `
+        \`\`\`ansi
+[2;31m[2;33m⚠️ ${message}[0m[2;31m[0m\`\`\`
+        `;
+    }
+    else if(type == 'success') {
+        return `
+        \`\`\`ansi
+[2;31m[2;33m[2;32m✅ ${message}[0m[2;33m[0m[2;31m[0m\`\`\`
+        `;
+    }
+}
