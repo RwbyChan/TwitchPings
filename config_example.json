@@ -3,15 +3,11 @@
 
     "twitch_client_id": "",
     "twitch_client_secret": "",
-    "twitch_scope": "",
-
     "twitch_channel_name": "",
 
-    "bot_command": "/streamping",
-
-    "owner_user_id": "",
     "discord_channel_id": "",
-    "discord_ping": "@everyone",
-    "discord_embed_color": "#ec1a55",
-    "discord_embed_footer_message": ""
+    "discord_ping_role": "",
+    "discord_embed_color": "",
+    "discord_embed_footer_message": "",
+    "auto_crosspost": false
 }
