@@ -5,14 +5,12 @@ const api = require('../api');
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('stream')
-        .setDescription('Get details about the livestream'),
+        .setDescription('Get a link to the stream'),
     async execute(client, interaction) {
-
-        const embed = new EmbedBuilder()
-        .setAuthor({ name: `Test` })
+        const config = api.get_config();
 
         await interaction.reply({
-            embeds: [embed],
+            content: `https://twitch.tv/${config.twitch_channel_name}`,
             ephemeral: false
         });
     }
