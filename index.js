@@ -8,6 +8,7 @@ const path = require('node:path');
 const client = new Client({ intents: [GatewayIntentBits.Guilds] });
 client.commands = new Collection();
 const slashCommands = [];
+const globalCommands = [];
 
 // When the client is ready, run this code (only once)
 client.once('ready', () => {
@@ -19,8 +20,14 @@ client.once('ready', () => {
 	// Register Slash commands
     const rest = new REST({ version: 10 }).setToken(discord_bot_token);
 	
+	// Guild Commands
 	rest.put(Routes.applicationGuildCommands(client_id, guild_id), { body: slashCommands })
-		.then(data => console.log(`Successfully registered ${data.length} application commands.`))
+		.then(data => console.log(`Successfully registered ${data.length} guild commands.`))
+		.catch(console.error);
+
+	// Global Commands
+	rest.put(Routes.applicationCommands(client_id), { body: globalCommands })
+		.then(data => console.log(`Successfully registered ${data.length} global commands.`))
 		.catch(console.error);
 });
 
@@ -34,6 +41,18 @@ for (const file of commandFiles) {
 	// With the key as the command name and the value as the exported module
 	client.commands.set(command.data.name, command);
     slashCommands.push(command.data.toJSON());
+}
+
+const globalCommandsPath = path.join(__dirname, "globalCommands");
+const globalCommandFiles = fs.readdirSync(globalCommandsPath).filter(file => file.endsWith('.js'));
+
+for (const file of globalCommandFiles) {
+	const filePath = path.join(globalCommandsPath, file);
+	const command = require(filePath);
+	// Set a new item in the Collection
+	// With the key as the command name and the value as the exported module
+	client.commands.set(command.data.name, command);
+    globalCommands.push(command.data.toJSON());
 }
 
 // On slash command event
