@@ -1,5 +1,4 @@
-const { SlashCommandBuilder } = require('discord.js');
-const { EmbedBuilder } = require('discord.js');
+const { SlashCommandBuilder, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 const api = require('../api');
 
 module.exports = {
@@ -19,9 +18,12 @@ module.exports = {
         .setFooter({ text: `${api.format_date()} ${config.discord_embed_footer_message}` })
         .setColor(config.discord_embed_color || "#9146FF");
 
+        let button = new ActionRowBuilder().addComponents(new ButtonBuilder().setLabel('Watch stream').setStyle(ButtonStyle.Link).setURL(`https://twitch.tv/${config.twitch_channel_name}`));
+
         await interaction.reply({
             content: api.format_ping(config.discord_ping_role),
             embeds: [embed],
+            components: [button],
             ephemeral: true
         });
     }
