@@ -1,4 +1,4 @@
-const { SlashCommandBuilder, ChannelType } = require('discord.js');
+const { SlashCommandBuilder, ChannelType, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 const { EmbedBuilder } = require('discord.js');
 const api = require('../api');
 
@@ -81,18 +81,23 @@ module.exports = {
                             .setColor(config.discord_embed_color || "#9146FF");
 
                             client.channels.fetch(channel).then(channel => {
+                                let button = new ActionRowBuilder().addComponents(new ButtonBuilder().setLabel('Watch stream').setStyle(ButtonStyle.Link).setURL(`https://twitch.tv/${user.display_name}`));
+
                                 channel.send({
                                     content: (ping === null ? api.format_ping(config.discord_ping_role) : (ping === true ? api.format_ping(config.discord_ping_role) : '')) + ' ' + (message != null ? message : ''),
-                                    embeds: [embed]
+                                    embeds: [embed],
+                                    components: [button]
                                 }).then(async message => {
-                                    if(config.auto_crosspost && message.channel.type == ChannelType.GuildNews) {
+                                    let embeds = [];
+                                    if(config.auto_crosspost && message.channel.type == ChannelType.GuildAnnouncement) {
                                         message.crosspost()
+                                        embeds.push(new EmbedBuilder().setDescription(api.format_alert('success', 'Announcement made successfully!')));
                                     }
 
-                                    let embeds = [new EmbedBuilder().setDescription(api.format_alert('success', 'Announcement made successfully!'))];
-                                    if(config.auto_crosspost && message.channel.type != ChannelType.GuildNews) {
+                                    if(config.auto_crosspost && message.channel.type != ChannelType.GuildAnnouncement) {
                                         embeds.push(new EmbedBuilder().setDescription(api.format_alert('warning', 'Auto crosspost failed because the channel is not an announcement channel!')))
                                     }
+
                                     await interaction.reply({
                                         embeds: embeds,
                                         ephemeral: true
