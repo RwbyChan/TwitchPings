@@ -47,6 +47,7 @@ module.exports = {
         }
         user = {
             display_name: user || config.twitch_channel_name,
+            user_name: user || config.twitch_channel_name,
             broadcaster_type: '',
             avatar: 'https://i.imgur.com/yXryR0G.png'
         }
@@ -62,6 +63,7 @@ module.exports = {
                         if(u.success) {
                             user = {
                                 display_name: u.user.display_name,
+                                user_name: u.user.login,
                                 broadcaster_type: u.user.broadcaster_type,
                                 avatar: u.user.profile_image_url
                             }
@@ -73,7 +75,7 @@ module.exports = {
                             const embed = new EmbedBuilder()
                             .setAuthor({ name: `${user.display_name} is now live on Twitch!`, iconURL: user.avatar })
                             .setTitle(streamer.stream.title || '-')
-                            .setURL(`https://twitch.tv/${config.twitch_channel_name}`)
+                            .setURL(`https://twitch.tv/${user.user_name}`)
                             .setThumbnail(streamer?.game ? streamer.game.box_art_url.replace('{width}', '285').replace('{height}', '380') + '&t=' + new Date().getTime() : 'https://i.imgur.com/mFjeKgU.jpg')
                             .setImage(streamer?.stream?.thumbnail_url ? streamer.stream.thumbnail_url.replace('{width}', '1920').replace('{height}', '1080') + '&t=' + new Date().getTime() : 'https://i.imgur.com/IXlBnkE.jpg')
                             .addFields({ name: 'Playing', value: streamer?.game ? streamer.game.name : '-' })
@@ -81,7 +83,7 @@ module.exports = {
                             .setColor(config.discord_embed_color || "#9146FF");
 
                             client.channels.fetch(channel).then(channel => {
-                                let button = new ActionRowBuilder().addComponents(new ButtonBuilder().setLabel('Watch stream').setStyle(ButtonStyle.Link).setURL(`https://twitch.tv/${user.display_name}`));
+                                let button = new ActionRowBuilder().addComponents(new ButtonBuilder().setLabel('Watch stream').setStyle(ButtonStyle.Link).setURL(`https://twitch.tv/${user.user_name}`));
 
                                 channel.send({
                                     content: (ping === null ? api.format_ping(config.discord_ping_role) : (ping === true ? api.format_ping(config.discord_ping_role) : '')) + ' ' + (message != null ? message : ''),
